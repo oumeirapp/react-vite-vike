@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
+import { PreRenderedChunk } from "vite/types/internal/rollupTypeCompat.js";
 
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
@@ -17,11 +18,16 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
+    cssCodeSplit: false,
+    modulePreload: false,
+    assetsInlineLimit: 100000000,
     rollupOptions: {
       output: {
-        // codeSplitting: false,
-        // entryFileNames: "main.js",
-        chunkFileNames: "chunks/[name].js",
+        
+        manualChunks: () => "app",
+
+        // entryFileNames: "[name]",
+        chunkFileNames: "assets/chunks/app.js",
         // assetFileNames: "assets/[name].[ext]",
       },
     },
