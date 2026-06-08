@@ -1,8 +1,6 @@
 import "./Layout.css";
 import "./tailwind.css";
 
-import logoUrl from "../assets/logo.svg";
-import { Link } from "../components/Link";
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"

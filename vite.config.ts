@@ -4,11 +4,20 @@ import react from "@vitejs/plugin-react";
 
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
-import { PreRenderedChunk } from "vite/types/internal/rollupTypeCompat.js";
+
+import dotenv from "dotenv";
+
+
+dotenv.config();
+
+const { VITE_BASE_URL } = process.env;
+
 
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
-  
+
+  base: `${VITE_BASE_URL}/`,
+
   resolve: {
     alias: {
       "@": new URL("./", import.meta.url).pathname,
@@ -20,7 +29,6 @@ export default defineConfig({
     assetsDir: "assets",
     cssCodeSplit: false,
     modulePreload: false,
-    assetsInlineLimit: 100000000,
     rollupOptions: {
       output: {
         

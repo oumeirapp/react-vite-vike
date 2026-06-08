@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
-import fs from "fs";
+import fs, { writeFile } from "fs";
 import path from "path";
+import { glob } from "glob";
+
 
 dotenv.config();
 
@@ -9,9 +11,10 @@ const {
    SFMC_CLIENT_SECRET,
    SFMC_AUTH_URL,
    SFMC_REST_URL,
-   SFMC_JS_ASSET_ID,
-   SFMC_CSS_ASSET_ID,
+   SFMC_ASSET_ID,
 } = process.env;
+
+const distDir = path.resolve("dist/client");
 
 
 async function getAccessToken() {
@@ -76,26 +79,17 @@ async function main() {
 
       console.log("✅ Authenticated");
 
-      const distDir = path.resolve("dist");
 
-      const jsPath = path.join(distDir, "main.js");
-      const cssPath = path.join(distDir, "assets/index.css");
+      const htmlPath = path.join(distDir, "index.html");
 
-      console.log("📤 Uploading main.js...");
+      console.log("📤 Uploading index.html...");
 
       const mainRes = await updateAsset({
          accessToken,
-         assetId: SFMC_JS_ASSET_ID,
-         filePath: jsPath,
+         assetId: SFMC_ASSET_ID,
+         filePath: htmlPath,
       });
 
-      console.log("📤 Uploading index.css...");
-
-      await updateAsset({
-         accessToken,
-         assetId: SFMC_CSS_ASSET_ID,
-         filePath: cssPath,
-      });
 
       console.log("🚀 Deploy complete");
    } catch (err) {
