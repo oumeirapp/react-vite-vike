@@ -1,5 +1,5 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy Deploy to SFMC cloudpages
+# Simple workflow for deploying static content to GitHub Pages and SFMC
+name: Deploy to SFMC and GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -9,33 +9,47 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Allow one concurrent deployment
+# REQUIRED FOR GITHUB PAGES: Grants rights to deploy and mint tokens
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment for pages and sfmc
 concurrency:
-  group: sfmc-deploy
+  group: sfmc-and-pages-deploy
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
+  # Single deploy job that handles both destinations
   deploy:
     environment:
       name: sfmc-cloudpages
+      url: ${{ steps.deployment.outputs.page_url }} # Automatically links the GH Pages URL in your Actions run
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: "npm"
+
       - name: Install dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
+
+      # --- YOUR EXISTING SFMC DEPLOYMENT STEPS ---
       - name: Bundle assets
         run: npm run bundle
+
       - name: Update HTML
         run: npm run update-html -- --prod
+
       - name: Upload assets to SFMC
         env:
           SFMC_CLIENT_ID: ${{ secrets.SFMC_CLIENT_ID }}
@@ -43,4 +57,19 @@ jobs:
           SFMC_AUTH_URL: ${{ secrets.SFMC_AUTH_URL }}
           SFMC_REST_URL: ${{ secrets.SFMC_REST_URL }}
           SFMC_ASSET_ID: ${{ secrets.SFMC_ASSET_ID }}
-        run: npm run deploy
+        run: npm run deploy-sfmc
+      
+       # --- GITHUB PAGES DEPLOYMENT STEPS ---
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # CHANGE THIS PATH: Set this to your local build output folder (e.g., 'dist', 'build', or '.')
+          path: 'dist' 
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      # -------------------------------------
