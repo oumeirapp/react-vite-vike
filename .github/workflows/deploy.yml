@@ -42,5 +42,5 @@ jobs:
           SFMC_CLIENT_SECRET: ${{ secrets.SFMC_CLIENT_SECRET }}
           SFMC_AUTH_URL: ${{ secrets.SFMC_AUTH_URL }}
           SFMC_REST_URL: ${{ secrets.SFMC_REST_URL }}
-          SFMC_JS_ASSET_ID: ${{ secrets.SFMC_JS_ASSET_ID }}
-        run: node scripts/deploy-sfmc.js
+          SFMC_ASSET_ID: ${{ secrets.SFMC_ASSET_ID }}
+        run: npm run deploy
