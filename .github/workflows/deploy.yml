@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # CHANGE THIS PATH: Set this to your local build output folder (e.g., 'dist', 'build', or '.')
-          path: 'dist' 
+          path: 'dist/client' 
 
       - name: Deploy to GitHub Pages
         id: deployment
