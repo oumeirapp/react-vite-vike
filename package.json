@@ -7,7 +7,7 @@
     "shadcn": "npx shadcn@latest",
     "bundle": "node scripts/bundle-single",
     "update-html": "node scripts/update-html",
-   " deploy-github": "gh-pages -d dist",
+   " deploy-github": "gh-pages -d dist/client",
     "deploy-sfmc": "node scripts/deploy-sfmc",
     "preview:prod": "npm run bundle && npm run update-html -- --prod && vike preview"
   },

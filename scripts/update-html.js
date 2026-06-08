@@ -38,7 +38,7 @@ else if(mode === "prod"){
 
   html = html.replace(
     /<link rel="stylesheet"[^>]*href="[^"]*style[^"]*\.css"[^>]*>/,
-    `<link rel="stylesheet" href="/react-vite-vike/style.css">`
+    `<link rel="stylesheet" href="/react-vite-vike/assets/static/style.css">`
   );
 }
 
