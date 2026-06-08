@@ -1,0 +1,46 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy Deploy to SFMC cloudpages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Allow one concurrent deployment
+concurrency:
+  group: sfmc-deploy
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: sfmc-cloudpages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Bundle assets
+        run: npm run bundle
+      - name: Update HTML
+        run: npm run update-html -- --prod
+      - name: Upload assets to SFMC
+        env:
+          SFMC_CLIENT_ID: ${{ secrets.SFMC_CLIENT_ID }}
+          SFMC_CLIENT_SECRET: ${{ secrets.SFMC_CLIENT_SECRET }}
+          SFMC_AUTH_URL: ${{ secrets.SFMC_AUTH_URL }}
+          SFMC_REST_URL: ${{ secrets.SFMC_REST_URL }}
+          SFMC_JS_ASSET_ID: ${{ secrets.SFMC_JS_ASSET_ID }}
+        run: node scripts/deploy-sfmc.js

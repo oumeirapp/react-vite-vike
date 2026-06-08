@@ -5,9 +5,19 @@ import react from "@vitejs/plugin-react";
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
 
+import dotenv from "dotenv";
+
+
+dotenv.config();
+
+const { VITE_BASE_URL } = process.env;
+
+
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
-  
+
+  base: `${VITE_BASE_URL}/`,
+
   resolve: {
     alias: {
       "@": new URL("./", import.meta.url).pathname,
@@ -17,11 +27,15 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
+    cssCodeSplit: false,
+    modulePreload: false,
     rollupOptions: {
       output: {
-        // codeSplitting: false,
-        // entryFileNames: "main.js",
-        chunkFileNames: "chunks/[name].js",
+        
+        manualChunks: () => "app",
+
+        // entryFileNames: "[name]",
+        chunkFileNames: "assets/chunks/app.js",
         // assetFileNames: "assets/[name].[ext]",
       },
     },
