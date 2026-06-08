@@ -4,13 +4,12 @@ import react from "@vitejs/plugin-react";
 
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
-import CONFIG from "./config.json";
 
 
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
 
-  base: `${CONFIG.basepath}/`,
+  base: "/react-vite-vike",
 
   resolve: {
     alias: {
