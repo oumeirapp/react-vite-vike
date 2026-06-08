@@ -1,12 +1,9 @@
 import fs from "fs/promises";
 import path from "path";
 import { glob } from "glob";
-import dotenv from "dotenv";
 
 
-dotenv.config();
-
-const { VITE_BASE_URL } = process.env;
+import CONFIG from "@/config.json";
 
 const distDir = "dist/client";
 
@@ -37,12 +34,12 @@ if(mode === "dev"){
 else if(mode === "prod"){
   html = html.replace(
     /<script[^>]+src="[^"]*entry-client-routing[^"]*"[^>]*><\/script>/,
-    `<script src="${VITE_BASE_URL}/bundle.js" type="module"></script>`
+    `<script src="${CONFIG.basepath}/bundle.js" type="module"></script>`
   );
 
   html = html.replace(
     /<link rel="stylesheet"[^>]*href="[^"]*style[^"]*\.css"[^>]*>/,
-    `<link rel="stylesheet" href="${VITE_BASE_URL}/style.css">`
+    `<link rel="stylesheet" href="${CONFIG.basepath}/style.css">`
   );
 }
 

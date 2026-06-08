@@ -4,19 +4,13 @@ import react from "@vitejs/plugin-react";
 
 import vike from "vike/plugin";
 import { defineConfig } from "vite";
-
-import dotenv from "dotenv";
-
-
-dotenv.config();
-
-const { VITE_BASE_URL } = process.env;
+import CONFIG from "@/config.json";
 
 
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
 
-  base: `${VITE_BASE_URL}/`,
+  base: `${CONFIG.basepath}/`,
 
   resolve: {
     alias: {
