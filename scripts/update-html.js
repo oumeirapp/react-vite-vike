@@ -3,7 +3,7 @@ import path from "path";
 import { glob } from "glob";
 
 
-import CONFIG from "@/config.json";
+import CONFIG from "./config.json";
 
 const distDir = "dist/client";
 
