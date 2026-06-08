@@ -9,7 +9,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [vike(), react(), tailwindcss()],
 
-  base: "/react-vite-vike",
+  base: "/react-vite-vike/",
 
   resolve: {
     alias: {
