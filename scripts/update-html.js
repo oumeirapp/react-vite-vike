@@ -33,12 +33,12 @@ if(mode === "dev"){
 else if(mode === "prod"){
   html = html.replace(
     /<script[^>]+src="[^"]*entry-client-routing[^"]*"[^>]*><\/script>/,
-    `<script src="/react-vite-vike/bundle.js" type="module"></script>`
+    `<script src="https://oumeirapp.github.io/react-vite-vike/bundle.js" type="module"></script>`
   );
 
   html = html.replace(
     /<link rel="stylesheet"[^>]*href="[^"]*style[^"]*\.css"[^>]*>/,
-    `<link rel="stylesheet" href="/react-vite-vike/assets/static/style.css">`
+    `<link rel="stylesheet" href="https://oumeirapp.github.io/react-vite-vike/assets/static/style.css">`
   );
 }
 
